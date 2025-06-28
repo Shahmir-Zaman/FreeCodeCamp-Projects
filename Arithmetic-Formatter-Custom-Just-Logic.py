@@ -37,96 +37,55 @@ def arithmetic_arranger(problems, show_answers=False):
             resultsTemp=str(int(problem.split(" ")[0])+int(problem.split(" ")[2]))
 
         if problem != problems[-1]:# To check if the problem is not the last one in the list
-            if len(firstRow)>len(secondRow):# to get equal space
-                firstRowTemp="  "+firstRow+"    "
-                if len(firstRow)-len(secondRow) == 1:
-                    secondRowTemp=operator+"  "+secondRow+"    "
-                elif len(firstRow)-len(secondRow) == 2:
-                    secondRowTemp=operator+"   "+secondRow+"    "
-                else:
-                    secondRowTemp=operator+"    "+secondRow+"    "
-                firstRowFinal+=firstRowTemp
-                secondRowFinal+=secondRowTemp
-                dashes=dashes+("-"*(len(firstRowTemp)-4))+"    "
-                if len(resultsTemp)<len(secondRowTemp):
-                    results=results+(" "*((len(secondRowTemp)-4)-len(resultsTemp)))+resultsTemp+"    "
-                else:
-                    results=results+resultsTemp+"    "
-
-            elif len(firstRow)<len(secondRow):
-                if len(secondRow)-len(firstRow) == 1:
-                    firstRowTemp="    "+firstRow+"    "
-                elif len(secondRow)-len(firstRow) == 2:
-                    firstRowTemp=operator+"     "+firstRow+"    "
-                else:
-                    firstRowTemp=operator+"      "+firstRow+"    "
-                secondRowTemp=(operator+"  ")+secondRow+"    "
-                firstRowFinal+=firstRowTemp
-                secondRowFinal+=secondRowTemp
-                dashes=dashes+"-"*(len(secondRowTemp)-4)+"    "
-                if len(resultsTemp)<len(secondRowTemp):
-                    results=results+(" "*((len(secondRowTemp)-4)-len(resultsTemp)))+resultsTemp+"    "
-                else:
-                    results=results+resultsTemp+"    "
-
-
-            else:
-                firstRowTemp=" "*3+firstRow+"    "
-                secondRowTemp=(operator)+"  "+secondRow+"    "
-                firstRowFinal+=firstRowTemp
-                secondRowFinal+=secondRowTemp
-                dashes=dashes+("-"*(len(secondRowTemp)-4))+"    "
-                if len(resultsTemp)<len(secondRowTemp):
-                    results=results+(" "*((len(secondRowTemp)-4)-len(resultsTemp)))+resultsTemp+"    "
-                else:
-                    results=results+resultsTemp+"    "
+            # Calculate width needed for this problem
+            width = max(len(firstRow), len(operator + " " + secondRow), len(resultsTemp)) + 2
+            
+            # First row - right aligned
+            spaces_first = width - len(firstRow)
+            firstRowTemp = " " * spaces_first + firstRow + "    "
+            
+            # Second row - right aligned  
+            operator_line = operator + " " + secondRow
+            spaces_second = width - len(operator_line)
+            secondRowTemp = " " * spaces_second + operator_line + "    "
+            
+            # Dashes row
+            dashesTemp = "-" * width + "    "
+            
+            # Results row - right aligned
+            spaces_results = width - len(resultsTemp)
+            resultsRowTemp = " " * spaces_results + resultsTemp + "    "
+            
+            firstRowFinal += firstRowTemp
+            secondRowFinal += secondRowTemp
+            dashes += dashesTemp
+            results += resultsRowTemp
 
 
         else:
-            if len(firstRow)>len(secondRow):# to get equal space
-                firstRowTemp="  "+firstRow
-                if len(firstRow)-len(secondRow) == 1:
-                    secondRowTemp=operator+"  "+secondRow
-                elif len(firstRow)-len(secondRow) == 2:
-                    secondRowTemp=operator+"   "+secondRow
-                else:
-                    secondRowTemp=operator+"    "+secondRow
-
-                firstRowFinal+=firstRowTemp
-                secondRowFinal+=secondRowTemp
-                dashes=dashes+"-"*(len(secondRowTemp))
-                if len(resultsTemp)<len(secondRowTemp):
-                    results=results+(" "*(len(secondRowTemp)-len(resultsTemp)))+resultsTemp
-                else:
-                    results=results+resultsTemp+"    "
-
-
-            elif len(firstRow)<len(secondRow):
-                if len(secondRow)-len(firstRow) == 1:
-                    firstRowTemp="    "+firstRow
-                elif len(secondRow)-len(firstRow) == 2:
-                    firstRowTemp=operator+"     "+firstRow
-                else:
-                    firstRowTemp=operator+"      "+firstRow
-                secondRowTemp=(operator+"  ")+secondRow
-                firstRowFinal+=firstRowTemp
-                secondRowFinal+=secondRowTemp
-                dashes=dashes+"-"*(len(secondRowTemp))
-                if len(resultsTemp)<len(secondRowTemp):
-                    results=results+(" "*(len(secondRowTemp)-len(resultsTemp)))+resultsTemp
-                else:
-                    results=results+resultsTemp
-
-            else:
-                firstRowTemp=" "*3+firstRow
-                secondRowTemp=(operator)+"  "+secondRow
-                firstRowFinal+=firstRowTemp
-                secondRowFinal+=secondRowTemp
-                dashes=dashes+"-"*(len(secondRowTemp))
-                if len(resultsTemp)<len(secondRowTemp):
-                    results=results+(" "*(len(secondRowTemp))-len(resultsTemp))+resultsTemp
-                else:
-                    results=results+resultsTemp
+            # Calculate width needed for this problem (last problem - no trailing spaces)
+            width = max(len(firstRow), len(operator + " " + secondRow), len(resultsTemp)) + 2
+            
+            # First row - right aligned
+            spaces_first = width - len(firstRow)
+            firstRowTemp = " " * spaces_first + firstRow
+            
+            # Second row - right aligned  
+            operator_line = operator + " " + secondRow
+            spaces_second = width - len(operator_line)
+            secondRowTemp = " " * spaces_second + operator_line
+            
+            # Dashes row
+            dashesTemp = "-" * width
+            
+            # Results row - right aligned
+            spaces_results = width - len(resultsTemp)
+            resultsRowTemp = " " * spaces_results + resultsTemp
+            
+            firstRowFinal += firstRowTemp
+            secondRowFinal += secondRowTemp
+            dashes += dashesTemp
+            results += resultsRowTemp
     
     if show_answers== True:
         return f'{firstRowFinal}\n{secondRowFinal}\n{dashes}\n{results}'
